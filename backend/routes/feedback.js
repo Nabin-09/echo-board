@@ -59,13 +59,14 @@ router.get('/', authenticateToken, async (req, res) => {
 
     // Get feedback with pagination
     const query = `
-      SELECT id, name, email, product_name, rating, comment, created_at 
-      FROM feedback 
-      ORDER BY created_at DESC 
-      LIMIT ? OFFSET ?
-    `;
+  SELECT id, name, email, product_name, rating, comment, created_at 
+  FROM feedback 
+  ORDER BY created_at DESC 
+  LIMIT ${limit} OFFSET ${offset}
+`;
 
-    const [rows] = await promisePool.execute(query, [limit, offset]);
+const [rows] = await promisePool.query(query); // use `.query()` instead of `.execute()`
+
 
     res.json({
       success: true,
@@ -147,12 +148,14 @@ router.get('/:id', authenticateToken, async (req, res) => {
     }
 
     const query = `
-      SELECT id, name, email, product_name, rating, comment, created_at 
-      FROM feedback 
-      WHERE id = ?
-    `;
+  SELECT id, name, email, product_name, rating, comment, created_at 
+  FROM feedback 
+  ORDER BY created_at DESC 
+  LIMIT ${limit} OFFSET ${offset}
+`;
 
-    const [rows] = await promisePool.execute(query, [feedbackId]);
+const [rows] = await promisePool.query(query); // use `.query()` instead of `.execute()`
+
 
     if (rows.length === 0) {
       return res.status(404).json({

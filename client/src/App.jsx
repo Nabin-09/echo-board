@@ -6,6 +6,7 @@ import Homepage from "./components/Homepage";
 import AboutUs from "./components/AboutUs";
 import UserDashboard from "./components/UserDashboard";
 import AdminDashboard from "./components/AdminDashboard";
+const API = import.meta.env.VITE_API_URL;
 
 
 
@@ -29,6 +30,7 @@ function App() {
          {/* Admin routes */}
         <Route path="/admin" element={<Login />} />
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
+
       </Routes>
     </>
   );

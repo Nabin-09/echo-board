@@ -1,10 +1,36 @@
 import React, { useState } from 'react';
+
+
 import axios from 'axios';
 import StarRating from './StarRating';
+const API = import.meta.env.VITE_API_URL;
+
+const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  const feedbackData = {
+    name,
+    email,
+    product_name: product,
+    rating: ratings.overall,
+    comment: message,
+  };
+
+  console.log("Submitting feedback:", feedbackData);
+
+  try {
+    const res = await axios.post(`${API}/feedback`, feedbackData);
+    console.log(res.data);
+  } catch (err) {
+    console.error("Error submitting feedback:", err);
+  }
+};
+
 
 // Assuming you have a CSS file for styles
 const FeedbackForm = () => {
   const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
   const [product, setProduct] = useState('');
   const [message, setMessage] = useState('');
   const [ratings, setRatings] = useState({
@@ -21,15 +47,19 @@ const FeedbackForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const feedbackData = {
-      name,
-      product,
-      message,
-      ratings,
-    };
+     const feedbackData = {
+  name,
+  email, // Add email input and state
+  product_name: product,
+  comment: message,
+  rating: ratings.overall, // or average your ratings if needed
+  };
+
 
     try {
-      const res = await axios.post('http://localhost:5000/feedback', feedbackData);
+      
+      const res = await axios.post(`${API}/feedback`, feedbackData);
+
       if (res.data.status) {
         alert('Feedback submitted successfully!');
         setName('');
@@ -62,6 +92,17 @@ const FeedbackForm = () => {
           onChange={(e) => setName(e.target.value)}
           required
         />
+        <div>
+  <label htmlFor="email">Email</label>
+  <input
+    type="email"
+    id="email"
+    value={email}
+    onChange={(e) => setEmail(e.target.value)}
+    required
+  />
+</div>
+
 
         <label className="form-label">Product</label>
         <select

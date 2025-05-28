@@ -1,6 +1,6 @@
 -- Create database and use it
-CREATE DATABASE IF NOT EXISTS echoboard_db;
-USE echoboard_db;
+-- CREATE DATABASE IF NOT EXISTS echoboard_db;
+-- USE echoboard_db;
 
 -- Feedback table
 CREATE TABLE IF NOT EXISTS feedback (
