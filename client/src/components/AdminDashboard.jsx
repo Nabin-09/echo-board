@@ -17,25 +17,60 @@ const AdminDashboard = () => {
       }
 
       try {
+        console.log('🚀 Attempting to fetch feedback...');
+        console.log('🔐 Auth token exists:', apiService.isAuthenticated());
+        console.log('🌐 API Base URL:', apiService.baseURL);
+        
         const response = await apiService.getAllFeedback();
-        console.log('Feedback response:', response);
+        
+        console.log('📦 Full API response:', response);
+        console.log('📊 Response status:', response?.status);
+        console.log('✅ Response OK:', response?.ok);
+        console.log('📋 response.data:', response?.data);
+        console.log('🎯 response.data.data:', response?.data?.data);
+        console.log('🔍 Type of response.data.data:', typeof response?.data?.data);
+        console.log('📏 Keys in response.data.data:', response?.data?.data ? Object.keys(response.data.data) : 'N/A');
 
-        // Handle nested data structure more robustly
+        // Handle nested data structure - Backend returns data.feedback array
         let feedbackList = [];
         
-        // Check multiple possible data locations
-        if (response?.data?.data && Array.isArray(response.data.data)) {
+        // Check for the correct data location based on backend structure
+        if (response?.data?.data?.feedback && Array.isArray(response.data.data.feedback)) {
+          feedbackList = response.data.data.feedback;
+          console.log('✅ Found feedback array in response.data.data.feedback:', feedbackList.length, 'items');
+        } else if (response?.data?.data && Array.isArray(response.data.data)) {
           feedbackList = response.data.data;
+          console.log('✅ Found feedback array in response.data.data:', feedbackList.length, 'items');
+        } else if (response?.data?.feedback && Array.isArray(response.data.feedback)) {
+          feedbackList = response.data.feedback;
+          console.log('✅ Found feedback array in response.data.feedback:', feedbackList.length, 'items');
         } else if (response?.data && Array.isArray(response.data)) {
           feedbackList = response.data;
+          console.log('✅ Found feedback array in response.data:', feedbackList.length, 'items');
         } else if (Array.isArray(response)) {
           feedbackList = response;
+          console.log('✅ Found feedback array in response:', feedbackList.length, 'items');
+        } else {
+          console.log('❌ No valid feedback array found anywhere in response');
         }
 
         setFeedbacks(feedbackList);
+        console.log('🎉 Set feedbacks state with', feedbackList.length, 'items');
         
         if (feedbackList.length === 0) {
-          console.warn("⚠️ No feedback data found in response:", response);
+          console.warn("⚠️ No feedback data found. Debug info:", {
+            responseExists: !!response,
+            responseOk: response?.ok,
+            responseStatus: response?.status,
+            hasData: !!response?.data,
+            hasNestedData: !!response?.data?.data,
+            dataType: typeof response?.data,
+            nestedDataType: typeof response?.data?.data,
+            isDataArray: Array.isArray(response?.data),
+            isNestedDataArray: Array.isArray(response?.data?.data),
+            dataKeys: response?.data ? Object.keys(response.data) : [],
+            nestedDataKeys: response?.data?.data ? Object.keys(response.data.data) : []
+          });
         }
         
       } catch (err) {
