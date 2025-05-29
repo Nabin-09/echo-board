@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-// import logo from "../assets/images/logo.jpeg";
+import logo from "../assets/images/logo1.jpeg";
 import { Link } from "react-router-dom";
 
 
@@ -33,7 +33,7 @@ const Navbar = ({
     <header className="navbar">
       <div className="logo-section">
         <div className="logo">
-          {/* <img src={logo} alt="Logo" className="logo-icon" /> */}
+          <img src={logo} alt="Logo" className="logo-icon" />
         </div>
         <h1 className="brand-name">{brandName}</h1>
       </div>

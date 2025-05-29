@@ -112,8 +112,8 @@ const FeedbackForm = () => {
           required
         >
           <option value="">Select Product</option>
-          <option value="Product A">Product A</option>
-          <option value="Product B">Product B</option>
+          <option value="Product A">Lotion</option>
+          <option value="Product B">Sunscreen</option>
         </select>
 
         <StarRating
